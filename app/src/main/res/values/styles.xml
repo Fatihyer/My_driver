@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="CustomEditText">
+    <item name="android:background">@drawable/custom_edittext_background</item>
+    <item name="android:textColor">@color/black</item>
+</style>
+</resources>
