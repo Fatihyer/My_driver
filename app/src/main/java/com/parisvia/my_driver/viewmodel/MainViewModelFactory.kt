@@ -7,8 +7,12 @@ import com.parisvia.my_driver.repository.UserRepository
 
 class MainViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val apiService = ApiClient.apiService
-        val userRepository = UserRepository(apiService)
-        return MainViewModel(userRepository) as T
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            val apiService = ApiClient.apiService
+            val userRepository = UserRepository(apiService)
+            @Suppress("UNCHECKED_CAST")
+            return MainViewModel(userRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
 }

@@ -1,16 +1,27 @@
 package com.parisvia.my_driver.network
 
 import com.parisvia.my_driver.model.LoginResponse
+import com.parisvia.my_driver.model.TransferResponse
 import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Query
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 interface ApiService {
+
     @FormUrlEncoded
     @POST("api/login") // Laravel'deki login endpoint'i
     suspend fun login(
         @Field("email") email: String,
         @Field("password") password: String
-    ):  Response<LoginResponse>
+    ): Response<LoginResponse>
+
+    @GET("api/transfers") // Laravel'deki Transfer API endpoint'i
+    suspend fun getTransfers(
+        @Header("Authorization") token: String, // Kullanıcı token'ı
+        @Query("start_date") dateOption: String? // "today", "yesterday", "tomorrow" gibi filtreler
+    ): Response<TransferResponse>
 }

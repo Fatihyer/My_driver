@@ -1,7 +1,21 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_profile"
+        android:title="Profil"
+        android:icon="@drawable/outline_account_circle_24"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_logout"
-        android:title="Çıkış Yap"
         android:icon="@drawable/ic_logout"
-        android:showAsAction="always" />
+        android:title="Çıkış"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_home"
+        android:title="Ana Sayfa"
+        android:icon="@drawable/ic_home"
+        app:showAsAction="always" />
 </menu>
