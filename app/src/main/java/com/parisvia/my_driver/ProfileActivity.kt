@@ -16,11 +16,12 @@ class ProfileActivity : BaseActivity() {
             val userId = securePreferences.getUserId() ?: "Bilinmiyor"
             val userName = securePreferences.getUserName() ?: "Bilinmiyor"
             val userEmail = securePreferences.getUserEmail() ?: "Bilinmiyor"
-
+            val userToken = securePreferences.getAuthToken() ?: "Bilinmiyor"
             // UI bileşenlerini bul ve bilgileri ekrana yazdır
             findViewById<TextView>(R.id.tvUserId)?.text = "Kullanıcı ID: $userId"
             findViewById<TextView>(R.id.tvUserName)?.text = "Ad: $userName"
             findViewById<TextView>(R.id.tvUserEmail)?.text = "E-posta: $userEmail"
+            findViewById<TextView>(R.id.tvUserToken)?.text = "E-posta: $userToken"
 
         } catch (e: Exception) {
             Toast.makeText(this, "Hata: ${e.message}", Toast.LENGTH_LONG).show()

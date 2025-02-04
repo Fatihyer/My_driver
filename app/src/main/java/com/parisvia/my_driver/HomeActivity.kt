@@ -1,6 +1,7 @@
 package com.parisvia.my_driver
 
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -10,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.parisvia.my_driver.adapters.TransferAdapter
-import com.parisvia.my_driver.model.TransferResponse
 import com.parisvia.my_driver.network.ApiClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,8 +22,11 @@ class HomeActivity : BaseActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var etDateRange: EditText
-    private lateinit var btnFilter: Button
-    private var selectedDate: String = ""
+    private lateinit var btnYesterday: Button
+    private lateinit var btnToday: Button
+    private lateinit var btnTomorrow: Button
+    private var selectedDateOption: String = "today" // Varsayılan olarak "Today"
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,25 +36,48 @@ class HomeActivity : BaseActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         etDateRange = findViewById(R.id.etDateRange)
-        btnFilter = findViewById(R.id.btnFilter)
+        btnYesterday = findViewById(R.id.btnYesterday)
+        btnToday = findViewById(R.id.btnToday)
+        btnTomorrow = findViewById(R.id.btnTomorrow)
 
-        // Tarih seçme işlemi
+        // Tarih seçme işlemi (manuel giriş)
         etDateRange.setOnClickListener {
             showDatePickerDialog()
+            resetButtonColors()
         }
 
-        // Filtreleme butonu
-        btnFilter.setOnClickListener {
-            if (selectedDate.isNotEmpty()) {
-                fetchTransfers(selectedDate)
-            } else {
-                Toast.makeText(this, "Lütfen tarih seçin!", Toast.LENGTH_SHORT).show()
-            }
+        // Yesterday Butonu
+        btnYesterday.setOnClickListener {
+            selectedDateOption = "yesterday"
+            val yesterday = getDate(-1)
+            etDateRange.setText(yesterday)
+            fetchTransfers(selectedDateOption)
+            updateButtonColors(btnYesterday)
         }
 
-        // Varsayılan olarak bugünün tarihini getir
-        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-        fetchTransfers(today)
+        // Today Butonu
+        btnToday.setOnClickListener {
+            selectedDateOption = "today"
+            val today = getDate(0)
+            etDateRange.setText(today)
+            fetchTransfers(selectedDateOption)
+            updateButtonColors(btnToday)
+        }
+
+        // Tomorrow Butonu
+        btnTomorrow.setOnClickListener {
+            selectedDateOption = "tomorrow"
+            val tomorrow = getDate(1)
+            etDateRange.setText(tomorrow)
+            fetchTransfers(selectedDateOption)
+            updateButtonColors(btnTomorrow)
+        }
+
+        // Varsayılan olarak bugünün tarihini EditText'e yaz ve verileri getir
+        val today = getDate(0)
+        etDateRange.setText(today)
+        fetchTransfers("today")
+        updateButtonColors(btnToday) // İlk başta today seçili
     }
 
     private fun showDatePickerDialog() {
@@ -65,16 +91,19 @@ class HomeActivity : BaseActivity() {
             { _, selectedYear, selectedMonth, selectedDay ->
                 val formattedDate = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
                 etDateRange.setText(formattedDate)
-                selectedDate = formattedDate
+                fetchTransfers(formattedDate) // Tarih seçildiğinde API'yi çağır
             },
             year, month, day
         )
         datePickerDialog.show()
     }
 
-    private fun fetchTransfers(date: String) {
+    private fun fetchTransfers(dateOption: String) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val response = ApiClient.apiService.getTransfers("Bearer " + SecurePreferences(this@HomeActivity).getAuthToken(), date)
+            val response = ApiClient.apiService.getTransfers(
+                "Bearer " + SecurePreferences(this@HomeActivity).getAuthToken(),
+                dateOption // API'ye gönderilecek tarih verisi
+            )
 
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful && response.body() != null) {
@@ -84,5 +113,33 @@ class HomeActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun getDate(daysOffset: Int): String {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, daysOffset)
+        return dateFormat.format(calendar.time)
+    }
+
+    // Seçili butonu vurgulamak için renk değiştir
+    private fun updateButtonColors(selectedButton: Button) {
+        resetButtonColors()
+        selectedButton.setBackgroundColor(Color.parseColor("#FF9800")) // Turuncu renk (seçili buton)
+        selectedButton.setTextColor(Color.WHITE)
+    }
+
+    // Bütün butonları varsayılan renge döndür
+    private fun resetButtonColors() {
+        val defaultColor = Color.parseColor("#DDDDDD") // Gri ton
+        val textColor = Color.BLACK
+
+        btnYesterday.setBackgroundColor(defaultColor)
+        btnYesterday.setTextColor(textColor)
+
+        btnToday.setBackgroundColor(defaultColor)
+        btnToday.setTextColor(textColor)
+
+        btnTomorrow.setBackgroundColor(defaultColor)
+        btnTomorrow.setTextColor(textColor)
     }
 }

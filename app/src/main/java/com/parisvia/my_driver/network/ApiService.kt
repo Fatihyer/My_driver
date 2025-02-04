@@ -24,4 +24,10 @@ interface ApiService {
         @Header("Authorization") token: String, // Kullanıcı token'ı
         @Query("start_date") dateOption: String? // "today", "yesterday", "tomorrow" gibi filtreler
     ): Response<TransferResponse>
+
+    @GET("api/transfer/{id}")
+    suspend fun getTransferDetail(
+        @Header("Authorization") token: String,
+        @Path("id") transferId: Int
+    ): Response<TransferDetailResponse>
 }

@@ -3,74 +3,117 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="4dp"
-    android:padding="10dp">
+    android:layout_margin="2dp"
 
-    <LinearLayout
+    app:cardElevation="4dp"
+    android:padding="0dp"
+    android:layout_marginBottom="10dp">
+
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:stretchColumns="*">
 
-        <TextView
-            android:id="@+id/tvPostId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+        <!-- Tablo Başlıkları -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="#"
+                android:textStyle="bold"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Depot"
+                android:textStyle="bold"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/tvStartDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/gray" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sur Place"
+                android:textStyle="bold"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Service"
+                android:textStyle="bold"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From"
+                android:textStyle="bold"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/tvServiceType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="@color/primary" />
 
-        <TextView
-            android:id="@+id/tvFrom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/black" />
+        </TableRow>
 
-        <TextView
-            android:id="@+id/tvTo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/black" />
+        <!-- Veriler -->
+        <TableRow>
+            <ImageButton
+                android:id="@+id/btnDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/green"
+                android:padding="8dp"
+                android:src="@drawable/ic_magnify"
+                android:tint="@android:color/white"
+                android:contentDescription="Detail Button"/>
+            <TextView
+                android:id="@+id/tvDepot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/gray" />
 
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="@color/status_color" />
+            <TextView
+                android:id="@+id/tvSurPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/red" />
+            <TextView
+                android:id="@+id/tvServiceType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/tvFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/tvPayment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/gray" />
 
-        <TextView
-            android:id="@+id/tvDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="@color/gray" />
-    </LinearLayout>
+        </TableRow>
+
+    </TableLayout>
 
 </androidx.cardview.widget.CardView>
