@@ -9,6 +9,7 @@ import retrofit2.http.Query
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -24,10 +25,10 @@ interface ApiService {
         @Header("Authorization") token: String, // Kullanıcı token'ı
         @Query("start_date") dateOption: String? // "today", "yesterday", "tomorrow" gibi filtreler
     ): Response<TransferResponse>
-
     @GET("api/transfer/{id}")
     suspend fun getTransferDetail(
         @Header("Authorization") token: String,
         @Path("id") transferId: Int
     ): Response<TransferDetailResponse>
+
 }

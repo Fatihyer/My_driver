@@ -11,6 +11,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.util.Log
 import android.widget.ImageButton
+import android.content.Intent
+import com.parisvia.my_driver.TransferDetailActivity
+
+
+
+
 
 class TransferAdapter(private val transfers: List<Transfer>) : RecyclerView.Adapter<TransferAdapter.TransferViewHolder>() {
 
@@ -45,9 +51,11 @@ class TransferAdapter(private val transfers: List<Transfer>) : RecyclerView.Adap
         holder.tvServiceType.text = "${transfer.servicetype.name ?: "Belirtilmemiş"}"
         holder.tvFromTo.text = transfer.from
         holder.btnDetail.setOnClickListener {
-            fetchTransferDetail(holder, transfer.id)
+            val context = holder.itemView.context
+            val intent = Intent(context, TransferDetailActivity::class.java)
+            intent.putExtra("transfer_id", transfer.id) // Transfer ID'yi yeni aktiviteye gönder
+            context.startActivity(intent)
         }
-
       //  holder.tvStatus.text = "Durum: ${getStatusText(transfer.status_id)}"
       //  holder.tvPayment.text = "Ödeme: ${transfer.comments ?: "Belirtilmemiş"}"
       //  holder.tvDetail.text = "Detay: ${transfer.dcomments ?: "Detay Yok"}"

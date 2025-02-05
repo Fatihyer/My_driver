@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <!-- Transfer Detay Başlığı -->
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Transfer Detayları"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:paddingBottom="10dp"/>
+
+    <!-- Transfer ID -->
+    <TextView
+        android:id="@+id/textViewTransferDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Transfer ID: "
+        android:textSize="18sp"
+        android:padding="8dp"/>
+
+    <!-- Transfer Servis Türü -->
+    <TextView
+        android:id="@+id/textViewServiceType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Servis Türü: "
+        android:textSize="16sp"
+        android:padding="8dp"/>
+
+    <!-- Transfer Durumu -->
+    <TextView
+        android:id="@+id/textViewStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Durum: "
+        android:textSize="16sp"
+        android:padding="8dp"/>
+
+    <!-- Transfer Başlangıç Noktası -->
+    <TextView
+        android:id="@+id/textViewFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nereden: "
+        android:textSize="16sp"
+        android:padding="8dp"/>
+
+    <!-- Transfer Bitiş Noktası -->
+    <TextView
+        android:id="@+id/textViewTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nereye: "
+        android:textSize="16sp"
+        android:padding="8dp"/>
+
+    <!-- Geri Dön Butonu -->
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Geri Dön"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/purple_500"
+        android:textColor="@android:color/white"/>
+
+</LinearLayout>
