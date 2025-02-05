@@ -1,7 +1,10 @@
 package com.parisvia.my_driver.model
 
-import com.google.gson.annotations.SerializedName
-
 data class TransferDetailResponse(
-    @SerializedName("start_date") val startDate: String // JSON'daki alanla eşleşmeli
+    val id: Int,
+    val start_date: String,
+    val status: String?,
+    val from: String,
+    val to: String
 )
+

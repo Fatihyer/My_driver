@@ -1,6 +1,7 @@
 package com.parisvia.my_driver.network
 
 import com.parisvia.my_driver.model.LoginResponse
+import com.parisvia.my_driver.model.TransferDetailResponse
 import com.parisvia.my_driver.model.TransferResponse
 import retrofit2.Response
 import retrofit2.http.GET
