@@ -1,10 +1,20 @@
 package com.parisvia.my_driver
 
+import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
 import android.util.Log
-import android.widget.TextView
+import android.view.Gravity
+import android.view.View
+import android.widget.*
 import androidx.lifecycle.lifecycleScope
 import com.parisvia.my_driver.model.TransferDetailResponse
+import com.parisvia.my_driver.model.StatusUpdateRequest
+import android.graphics.Typeface
 import com.parisvia.my_driver.network.ApiClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,21 +27,29 @@ class TransferDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transfer_detail)
 
+        // **Geri Butonu (Return Back)**
+        val btnBack = findViewById<Button>(R.id.btnBack)
+        btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
         val transferId = intent.getIntExtra("transfer_id", -1)
+        val textViewTransferDetail = findViewById<TextView>(R.id.textViewTransferDetail)
 
         if (transferId != -1) {
             fetchTransferDetail(transferId)
+            textViewTransferDetail.visibility = View.GONE
         } else {
-            findViewById<TextView>(R.id.textViewTransferDetail).text = "Veri bulunamadı!"
+            textViewTransferDetail.visibility = View.VISIBLE
+            textViewTransferDetail.text = "Veri bulunamadı!"
         }
+
     }
 
     private fun fetchTransferDetail(transferId: Int) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val token = "Bearer " + SecurePreferences(this@TransferDetailActivity).getAuthToken()
-                Log.d("DEBUG", "API çağrısı yapılıyor. Token: $token, ID: $transferId")
-
                 val response = ApiClient.apiService.getTransferDetail(token, transferId)
 
                 withContext(Dispatchers.Main) {
@@ -39,36 +57,158 @@ class TransferDetailActivity : BaseActivity() {
                         val transferDetail = response.body()
 
                         transferDetail?.let {
-                            Log.d("TRANSFER_DETAIL", "Başlangıç Tarihi: ${it.start_date}, Durum: ${it.status}")
+                            val transfer = it.transfer
+                            val timetable = it.transfer.timetable
 
-                            // UI'yi güncelle
-                            findViewById<TextView>(R.id.textViewTransferDetail).text =
-                                "Başlangıç Tarihi: ${it.start_date}"
-                            findViewById<TextView>(R.id.textViewFrom).text = "Nereden: ${it.from}"
-                            findViewById<TextView>(R.id.textViewTo).text = "Nereye: ${it.to}"
-                            findViewById<TextView>(R.id.textViewStatus).text = "Durum: ${it.status}"
+                            val tableTimetable = findViewById<TableLayout>(R.id.tableTimetable)
+                            val tableTrajets = findViewById<TableLayout>(R.id.tableTrajets)
+                            val confirmButton = findViewById<Button>(R.id.buttonConfirm)
+                            val textViewStatus = findViewById<TextView>(R.id.textViewStatus)
+                            val misafirTextView = findViewById<TextView>(R.id.textViewMisafir)
+                            val MissionBtn: Button =findViewById(R.id.btnMission)
+                            // ✅ **Mevcut tabloları temizle**
+                            if (tableTimetable.childCount > 1) {
+                                tableTimetable.removeViews(1, tableTimetable.childCount - 1)
+                            }
+                            if (tableTrajets.childCount > 1) {
+                                tableTrajets.removeViews(1, tableTrajets.childCount - 1)
+                            }
+                            MissionBtn.setOnClickListener {
+
+                                val intent = Intent(this@TransferDetailActivity,MissionActivity::class.java)
+                                intent.putExtra("transfer_id", transfer.id) // Transfer ID'yi yeni aktiviteye gönder
+                                startActivity(intent)
+                            }
+
+                            // ✅ **Zaman Çizelgesi Tablosuna verileri ekleyelim**
+                            val newRow = TableRow(this@TransferDetailActivity)
+                            listOf(
+                                timetable.ofisStart,
+                                timetable.sur_place,
+                                timetable.startDate,
+                                timetable.endDate
+                            ).forEach { value ->
+                                val textView = TextView(this@TransferDetailActivity).apply {
+                                    text = value ?: "N/A"
+                                    gravity = Gravity.CENTER
+                                    setPadding(8, 8, 8, 8)
+                                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                                    setBackgroundColor(Color.WHITE)
+                                    setTextColor(Color.BLACK)
+                                    setBackgroundResource(R.drawable.table_border)
+                                }
+                                newRow.addView(textView)
+                            }
+                            tableTimetable.addView(newRow)
+
+                            // ✅ **Trajets bilgilerini tabloya ekleyelim**
+                            if (!it.trajets.isNullOrEmpty()) {
+                                for (trajet in it.trajets) {
+                                    val trajetRow = TableRow(this@TransferDetailActivity)
+
+                                    val textTrajetDetails = TextView(this@TransferDetailActivity).apply {
+                                        text = trajet.details ?: "Bilinmiyor"
+                                      //  gravity = Gravity.CENTER
+                                        setPadding(8, 8, 8, 8)
+                                        layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                                        setBackgroundColor(Color.WHITE)
+                                        setTextColor(Color.BLACK)
+                                        setBackgroundResource(R.drawable.table_border)
+                                    }
+
+                                    trajetRow.addView(textTrajetDetails)
+                                    tableTrajets.addView(trajetRow)
+                                }
+                            } else {
+                                val emptyRow = TableRow(this@TransferDetailActivity)
+                                val emptyText = TextView(this@TransferDetailActivity).apply {
+                                    text = "Trajet bilgisi bulunamadı!"
+                                    gravity = Gravity.CENTER
+                                    setPadding(8, 8, 8, 8)
+                                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                                    setBackgroundColor(Color.WHITE)
+                                    setTextColor(Color.RED)
+                                    setBackgroundResource(R.drawable.table_border)
+                                }
+                                emptyRow.addView(emptyText)
+                                tableTrajets.addView(emptyRow)
+                            }
+
+                            // ✅ **Misafir (Müşteri) bilgilerini güncelle**
+                            val misafirList = it.misafirler.joinToString("\n") { misafir ->
+                                "${misafir.name} ${misafir.surname} - ${misafir.phone}"
+                            }
+                            misafirTextView.text = misafirList
+
+
+
+
+                            // ✅ **Transfer Detaylarını Güncelle**
+                            findViewById<TextView>(R.id.textViewServiceType).text = "Service: ${transfer.servicetype.name ?: "Not Set"}"
+                            findViewById<TextView>(R.id.textViewVehicule).text = "Vehicule: ${transfer.vehicule.name ?: "Not Set"}"
+
+                            val textViewFrom = findViewById<TextView>(R.id.textViewFrom)
+                            val targetText = transfer.from
+                            val fullText = "Lieu de Prise en Charge: $targetText"
+                            val spannable = SpannableStringBuilder(fullText)
+                            val start = fullText.indexOf(targetText)
+                            val end = start + targetText.length
+
+                            spannable.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                            textViewFrom.text = spannable
+
+                            findViewById<TextView>(R.id.textViewTo).text = "Lieux de depose: ${transfer.target}"
+                            textViewStatus.text = transfer.status.name
+                            findViewById<TextView>(R.id.textViewPax).text = "Passager(s): ${transfer.pax}"
+                            findViewById<TextView>(R.id.textViewComments).text="Comments: ${transfer.comments ?: "No comments"}"
+
+                            // ✅ **Status ID'ye göre renk değişimi ve buton görünürlüğü**
+                            if (transfer.status_id==3) {
+
+                                    textViewStatus.setTextColor(Color.BLUE) // Mavi
+                                    confirmButton.visibility = View.GONE
+                                    MissionBtn.visibility = View.VISIBLE
+                                }
+                                else  {
+                                    textViewStatus.setTextColor(Color.BLACK) // Siyah
+                                    confirmButton.visibility = View.VISIBLE
+                                }
+
+                            confirmButton.setOnClickListener {
+                                lifecycleScope.launch(Dispatchers.IO) {
+                                    try {
+                                        val updateRequest = StatusUpdateRequest(status_id = 3)
+                                        val updateResponse = ApiClient.apiService.confirmTransfer(token, transfer.id, updateRequest)
+
+                                        withContext(Dispatchers.Main) {
+                                            if (updateResponse.isSuccessful) {
+                                                confirmButton.visibility = View.GONE
+                                                recreate() // Sayfayı yenile
+                                            } else {
+                                                Log.e("UPDATE_ERROR", "Hata: ${updateResponse.code()}")
+                                            }
+                                        }
+                                    } catch (e: Exception) {
+                                        withContext(Dispatchers.Main) {
+                                            Log.e("UPDATE_EXCEPTION", "Güncelleme hatası: ${e.message}")
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    } else {
-                        Log.e("API_ERROR", "Veri çekilemedi! HTTP Code: ${response.code()}")
-                        findViewById<TextView>(R.id.textViewTransferDetail).text = "API Hatası: ${response.code()}"
                     }
                 }
-            } catch (e: HttpException) {
-                Log.e("API_FAILURE", "HTTP Hatası: ${e.message}")
-                withContext(Dispatchers.Main) {
-                    findViewById<TextView>(R.id.textViewTransferDetail).text = "HTTP Hatası: ${e.message}"
-                }
-            } catch (e: IOException) {
-                Log.e("API_FAILURE", "Bağlantı hatası! İnternet bağlantınızı kontrol edin.")
-                withContext(Dispatchers.Main) {
-                    findViewById<TextView>(R.id.textViewTransferDetail).text = "Bağlantı hatası! İnternet bağlantınızı kontrol edin."
-                }
             } catch (e: Exception) {
-                Log.e("API_FAILURE", "Bilinmeyen hata: ${e.message}")
                 withContext(Dispatchers.Main) {
-                    findViewById<TextView>(R.id.textViewTransferDetail).text = "Bilinmeyen hata: ${e.message}"
+                    findViewById<TextView>(R.id.textViewTransferDetail).text = "Bağlantı hatası!"
                 }
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 }

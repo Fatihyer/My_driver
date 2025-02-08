@@ -1,75 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:fillViewport="true">
 
-    <!-- Transfer Detay Başlığı -->
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Transfer Detayları"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_gravity="center"
-        android:paddingBottom="10dp"/>
-
-    <!-- Transfer ID -->
-    <TextView
-        android:id="@+id/textViewTransferDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Transfer ID: "
-        android:textSize="18sp"
-        android:padding="8dp"/>
-
-    <!-- Transfer Servis Türü -->
-    <TextView
-        android:id="@+id/textViewServiceType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Servis Türü: "
-        android:textSize="16sp"
-        android:padding="8dp"/>
-
-    <!-- Transfer Durumu -->
-    <TextView
-        android:id="@+id/textViewStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Durum: "
-        android:textSize="16sp"
-        android:padding="8dp"/>
-
-    <!-- Transfer Başlangıç Noktası -->
-    <TextView
-        android:id="@+id/textViewFrom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nereden: "
-        android:textSize="16sp"
-        android:padding="8dp"/>
-
-    <!-- Transfer Bitiş Noktası -->
-    <TextView
-        android:id="@+id/textViewTo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nereye: "
-        android:textSize="16sp"
-        android:padding="8dp"/>
-
-    <!-- Geri Dön Butonu -->
-    <Button
-        android:id="@+id/btnBack"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Return Back"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/purple_500"
-        android:textColor="@android:color/white"/>
+        android:padding="16dp"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <!-- Transfer Detay Başlığı -->
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transfer Detail"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:paddingBottom="10dp"/>
+
+        <!-- Transfer Durumu -->
+        <TextView
+            android:id="@+id/textViewStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Statu: "
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+        <!-- Confirm Butonu -->
+        <Button
+            android:id="@+id/buttonConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please Confirm"
+            android:backgroundTint="@color/green"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            android:padding="8dp"/>
+
+        <!-- Zaman Çizelgesi -->
+        <TableLayout
+            android:id="@+id/tableTimetable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:padding="8dp"
+            android:background="@android:color/darker_gray"> <!-- Çerçeve rengi -->
+
+            <!-- Tablo Başlıkları -->
+            <TableRow
+                android:background="@android:color/black"> <!-- Başlık arka plan rengi -->
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="En Route"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:background="@android:color/darker_gray"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Surplace"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:background="@android:color/darker_gray"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="PEC"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:background="@android:color/darker_gray"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Finish"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:background="@android:color/darker_gray"/>
+            </TableRow>
+
+            <!-- Dinamik İçerik Kotlin Kodu ile Eklenecek -->
+        </TableLayout>
+
+
+        <!-- Transfer ID -->
+        <TextView
+            android:id="@+id/textViewTransferDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transfer ID: "
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:visibility="gone"/>
+
+
+
+
+        <TextView
+            android:id="@+id/textViewVehicule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vehicule: "
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+        <!-- Transfer Servis Türü -->
+        <TextView
+            android:id="@+id/textViewServiceType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Servis Türü: "
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/textViewPax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pax: "
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+        <!-- Transfer Başlangıç Noktası -->
+        <TextView
+            android:id="@+id/textViewFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+        <!-- Transfer Bitiş Noktası -->
+        <TextView
+            android:id="@+id/textViewTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nereye: "
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/textViewMisafir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Misafir: "
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+
+        <TextView
+            android:id="@+id/textViewComments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comments: "
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trajet"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="0dp"
+            android:textColor="@android:color/white"
+            android:background="@android:color/holo_green_dark"/>
+        <!-- Trajets Bilgisi -->
+        <TableLayout
+            android:id="@+id/tableTrajets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1"
+            android:padding="0dp"
+            android:background="@android:color/holo_green_light"/>
+        <!-- Geri Dön Butonu -->
+
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Return Back"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/purple_500"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/btnMission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red"
+            android:textColor="@android:color/white"
+            android:text="Mission Start"
+            android:visibility="gone"/>
+
+    </LinearLayout> <!-- Düzgün kapanan LinearLayout -->
+
+</ScrollView>

@@ -31,6 +31,7 @@
         <activity android:name=".HomeActivity" android:exported="true" />
         <activity android:name=".ProfileActivity" android:exported="true" />
         <activity android:name=".TransferDetailActivity" android:exported="true"/>
+        <activity android:name=".MissionActivity" android:exported="true"/>
     </application>
 
 </manifest>

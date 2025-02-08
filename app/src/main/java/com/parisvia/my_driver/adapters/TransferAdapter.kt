@@ -65,24 +65,31 @@ class TransferAdapter(private val transfers: List<Transfer>) : RecyclerView.Adap
         return transfers.size
     }
     // Tarih formatını güncelle
-
-
     private fun formatDate(dateString: String): String {
         return try {
+            Log.d("JSON_DATE", "Gelen tarih: $dateString")
 
-            Log.d("JSON_DATE", "gelen tarig: $dateString" )
+            // JSON formatındaki tarihi doğru parse et
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
+            inputFormat.timeZone = TimeZone.getTimeZone("UTC") // Gelen tarih UTC kabul edilir
 
-            // ISO 8601 formatındaki tarihi parse etmek için giriş formatı
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", Locale.US)
-            inputFormat.timeZone = TimeZone.getTimeZone("UTC") // UTC olarak parse et
-
-            val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-            outputFormat.timeZone = TimeZone.getTimeZone("UTC") // Çıktıyı da UTC formatında tut
+            val outputFormat = SimpleDateFormat("HH:mm", Locale.ROOT)
+            outputFormat.timeZone = TimeZone.getTimeZone("UTC") // UTC'den UTC'ye çevirerek farkı kaldır
 
             val date = inputFormat.parse(dateString)
-            outputFormat.format(date ?: Date()) // Hata durumunda şu anki zamanı döndür
+            outputFormat.format(date ?: Date()) // Eğer hata olursa şimdiki zamanı döndür
         } catch (e: Exception) {
+            Log.e("JSON_DATE", "Tarih formatlama hatası", e)
             dateString // Hata olursa orijinal tarihi döndür
+        }
+    }
+
+
+    private fun logJsonData(jsonString: String) {
+        try {
+            Log.d("JSON_LOG", "Gelen JSON: $jsonString")
+        } catch (e: Exception) {
+            Log.e("JSON_LOG", "JSON loglama hatası", e)
         }
     }
 

@@ -3,6 +3,7 @@ package com.parisvia.my_driver.network
 import com.parisvia.my_driver.model.LoginResponse
 import com.parisvia.my_driver.model.TransferDetailResponse
 import com.parisvia.my_driver.model.TransferResponse
+import com.parisvia.my_driver.model.StatusUpdateRequest
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -11,6 +12,8 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.PUT
+import retrofit2.http.Body
 
 interface ApiService {
 
@@ -31,5 +34,12 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") transferId: Int
     ): Response<TransferDetailResponse>
+
+    @PUT("api/confirmTransfer/{id}")
+    suspend fun confirmTransfer(
+        @Header("Authorization") token: String,
+        @Path("id") transferId: Int,
+        @Body request: StatusUpdateRequest
+    ): Response<Unit>
 
 }
