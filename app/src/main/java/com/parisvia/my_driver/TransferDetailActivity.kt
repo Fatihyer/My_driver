@@ -66,6 +66,10 @@ class TransferDetailActivity : BaseActivity() {
                             val textViewStatus = findViewById<TextView>(R.id.textViewStatus)
                             val misafirTextView = findViewById<TextView>(R.id.textViewMisafir)
                             val MissionBtn: Button =findViewById(R.id.btnMission)
+                            val buttonOpenMaps = findViewById<Button>(R.id.buttonOpenMaps)
+
+
+
                             // ✅ **Mevcut tabloları temizle**
                             if (tableTimetable.childCount > 1) {
                                 tableTimetable.removeViews(1, tableTimetable.childCount - 1)
@@ -79,6 +83,20 @@ class TransferDetailActivity : BaseActivity() {
                                 intent.putExtra("transfer_id", transfer.id) // Transfer ID'yi yeni aktiviteye gönder
                                 startActivity(intent)
                             }
+
+                            ////harita
+                            Log.d("MAPS_DATA", "Maps Origin: ${transfer.origin}")
+                            Log.d("MAPS_DATA", "Maps Destination: ${transfer.destination}")
+                            Log.d("MAPS_DATA", "Maps Waypoints (String): ${transfer.waypoints}")
+
+                            if (transfer.origin != null && transfer.destination != null) {
+                                buttonOpenMaps.visibility = View.VISIBLE
+                                buttonOpenMaps.setOnClickListener {
+                                    openGoogleMaps(transfer.origin, transfer.destination, transfer.waypoints)
+                                }
+                            } else {
+                                buttonOpenMaps.visibility = View.GONE                            }
+
 
                             // ✅ **Zaman Çizelgesi Tablosuna verileri ekleyelim**
                             val newRow = TableRow(this@TransferDetailActivity)
@@ -206,6 +224,42 @@ class TransferDetailActivity : BaseActivity() {
             }
         }
     }
+    private fun openGoogleMaps(origin: String, destination: String, waypoints: String?) {
+        val uriString = buildGoogleMapsUri(origin, destination, waypoints)
+        Log.d("MAPS_INTENT", "Google Maps URI: $uriString") // ✅ URI'yi Logcat'te kontrol etmek için
+
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uriString))
+        intent.setPackage("com.google.android.apps.maps") // 📌 Google Haritalar uygulamasıyla açmayı dene
+
+        val resolveInfo = intent.resolveActivity(packageManager)
+
+        if (resolveInfo != null) {
+            Log.d("MAPS_INTENT", "Google Haritalar uygulaması bulundu: $resolveInfo")
+            startActivity(intent)
+        } else {
+            Log.e("MAPS_INTENT", "Google Haritalar YÜKLÜ DEĞİL! Varsayılan tarayıcıyı açıyorum.")
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uriString))
+            startActivity(browserIntent)
+        }
+    }
+
+
+
+
+    private fun buildGoogleMapsUri(origin: String, destination: String, waypoints: String?): String {
+        val baseUri = "https://www.google.com/maps/dir/?api=1"
+
+        val encodedOrigin = Uri.encode(origin)
+        val encodedDestination = Uri.encode(destination)
+        val encodedWaypoints = waypoints?.let { Uri.encode(it) } ?: ""
+
+        return if (encodedWaypoints.isNotEmpty()) {
+            "$baseUri&origin=$encodedOrigin&destination=$encodedDestination&waypoints=$encodedWaypoints"
+        } else {
+            "$baseUri&origin=$encodedOrigin&destination=$encodedDestination"
+        }
+    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()

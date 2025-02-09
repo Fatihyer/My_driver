@@ -16,9 +16,18 @@ data class Transfer(
     val servicetype: ServiceType,
     val status: Status,
     val vehicule: Vehicule,
-    val timetable: Timetable
+    val timetable: Timetable,
+    val origin: String,
+    val destination: String,
+    val waypoints: String
 
-)
+) {
+    // ✅ Waypoints'i `String` → `List<String>` formatına çeviriyoruz
+    fun getWaypointsList(): List<String>? {
+        return waypoints?.split("|")
+            ?.map { it.trim() } // ✅ `|` ile böl, baştaki/sondaki boşlukları temizle
+    }
+}
 data class ServiceType(
     val id: Int,
     val name: String

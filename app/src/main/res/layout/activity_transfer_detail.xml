@@ -196,7 +196,25 @@
             android:background="@android:color/holo_green_light"/>
         <!-- Geri Dön Butonu -->
 
-
+        <Button
+            android:id="@+id/buttonOpenMaps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Haritada Aç"
+            android:textColor="@android:color/black"
+            android:backgroundTint="@color/yellow"
+            android:drawableLeft="@drawable/ic_map"
+            android:drawablePadding="8dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/btnMission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red"
+            android:textColor="@android:color/white"
+            android:text="Mission Start"
+            android:visibility="gone"/>
         <Button
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
@@ -206,14 +224,10 @@
             android:backgroundTint="@color/purple_500"
             android:textColor="@android:color/white"/>
 
-        <Button
-            android:id="@+id/btnMission"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/red"
-            android:textColor="@android:color/white"
-            android:text="Mission Start"
-            android:visibility="gone"/>
+
+
+
+
 
     </LinearLayout> <!-- Düzgün kapanan LinearLayout -->
 
