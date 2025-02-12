@@ -89,13 +89,12 @@ class TransferDetailActivity : BaseActivity() {
                             Log.d("MAPS_DATA", "Maps Destination: ${transfer.destination}")
                             Log.d("MAPS_DATA", "Maps Waypoints (String): ${transfer.waypoints}")
 
-                            if (transfer.origin != null && transfer.destination != null) {
+
                                 buttonOpenMaps.visibility = View.VISIBLE
                                 buttonOpenMaps.setOnClickListener {
                                     openGoogleMaps(transfer.origin, transfer.destination, transfer.waypoints)
                                 }
-                            } else {
-                                buttonOpenMaps.visibility = View.GONE                            }
+                            
 
 
                             // ✅ **Zaman Çizelgesi Tablosuna verileri ekleyelim**

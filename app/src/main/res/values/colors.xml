@@ -12,5 +12,6 @@
     <color name="red">#FF0000</color> <!-- kırmızı renk tanımlandı -->
     <color name="green">#4CAF50</color>
     <color name="yellow">#FFFF00</color>
+    <color name="blue">#0000FF</color>
     <color name="status_color">#FF5722</color> <!-- Durum rengi -->
 </resources>
