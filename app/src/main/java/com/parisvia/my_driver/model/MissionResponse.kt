@@ -27,14 +27,20 @@ data class Transfert(
     @SerializedName("id") val id: Int,
     @SerializedName("from") val from: String,
     @SerializedName("target") val target: String,
+    @SerializedName("surplace") val pecsurplace: String,
     @SerializedName("pax") val pax: Int,
-    @SerializedName("vehicule") val vehicule: Arac?,
+    @SerializedName("vehicule") val vehicule: String,
     @SerializedName("ofis_start") val ofisStart: String,
     @SerializedName("start_date") val startDate: String,
     @SerializedName("end_date") val endDate: String?,
-    @SerializedName("mission_url") val missionUrl: String?
+    @SerializedName("mission_url") val missionUrl: String?,
+    @SerializedName("servicetype") val serviceType: String,
+    @SerializedName("guzergah") val guzergah: List<Guzergah>,
+
+)
+data class Guzergah(
+    val id: Int,
+    val details: String
 )
 
-data class Arac(
-    @SerializedName("name") val name: String
-)
+

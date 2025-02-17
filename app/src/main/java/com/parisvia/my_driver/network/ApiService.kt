@@ -1,5 +1,6 @@
 package com.parisvia.my_driver.network
 
+import com.parisvia.my_driver.model.DepotFinishMissionRequest
 import com.parisvia.my_driver.model.LoginResponse
 import com.parisvia.my_driver.model.TransferDetailResponse
 import com.parisvia.my_driver.model.TransferResponse
@@ -79,11 +80,15 @@ interface ApiService {
     ): Response<MissionResponse>
 
     // 📌 5️⃣ Görevi depo dönüşü ve temizlik durumu ile bitir
-    @POST("api/finishmissiondepot/{transferId}")
+    @POST("api/m/finishmissiondepot/{transferId}")
     suspend fun finishMissionDepot(
         @Header("Authorization") token: String,
         @Path("transferId") transferId: Int,
-        @Body request: Map<String, Any> // finish_km ve cleaningStatus
+        @Body request: DepotFinishMissionRequest // DÜZELTİLDİ!
     ): Response<MissionResponse>
+
+
+
+
 
 }

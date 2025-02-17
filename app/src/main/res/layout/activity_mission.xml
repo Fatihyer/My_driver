@@ -14,29 +14,91 @@
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Geri"
+        android:text="Retour"
         android:drawableStart="@android:drawable/ic_media_previous"
         android:backgroundTint="@color/black"
         android:textColor="@android:color/white"/>
 
-    <!-- Görev Detayları -->
+
+
     <TextView
-        android:id="@+id/textViewMissionDetail"
+        android:id="@+id/textViewTransferDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Görev bilgileri yükleniyor..."
+        android:text="Transfer.."
         android:textSize="16sp"
         android:padding="8dp"
         android:textColor="@android:color/black"
         android:background="@android:color/darker_gray"
         android:gravity="center"/>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@drawable/border_rounded"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lieu de depart"
+            android:textSize="16sp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/editfrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Text4"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+    <!-- Vehicule -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@drawable/border_rounded"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vehicule"
+            android:textSize="16sp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/textViewVehicule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Text4"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewgoTO"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Maintanant aller a.."
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:textColor="@color/red" />
     <!-- Kilometre Girişi -->
     <EditText
         android:id="@+id/editTextKm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Kilometre girin"
+        android:hint="Entrez le Km du vehicule"
         android:inputType="number"
         android:visibility="gone"
         android:padding="8dp"
@@ -49,7 +111,7 @@
         android:id="@+id/buttonStartMission"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Görevi Başlat"
+        android:text="Start Mission"
         android:backgroundTint="@color/green"
         android:textColor="@android:color/white"
         android:visibility="gone"
@@ -69,7 +131,7 @@
         android:id="@+id/buttonOnBoard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Yolcu Alındı"
+        android:text="Price en charge des clients"
         android:backgroundTint="@color/blue"
         android:textColor="@android:color/white"
         android:visibility="gone"
@@ -85,5 +147,55 @@
         android:textColor="@android:color/white"
         android:visibility="gone"
         android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/editTextFinishKm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Bitiş Kilometresi"
+        android:inputType="number"
+        android:visibility="gone"
+        android:padding="8dp"
+        android:background="@android:drawable/editbox_background"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textViewCleaningStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Araç Temizliği:"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"/>
+
+    <Spinner
+        android:id="@+id/spinnerCleaningStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginBottom="10dp"/>
+    <Button
+        android:id="@+id/buttonFisnishDepot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Görevi Tamamla"
+        android:backgroundTint="@color/red"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"/>
+
+
+    <!-- Görev Detayları -->
+    <TextView
+        android:id="@+id/textViewMissionDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Görev bilgileri yükleniyor..."
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:textColor="@android:color/black"
+        android:background="@android:color/darker_gray"
+        android:gravity="center"/>
+
 
 </LinearLayout>

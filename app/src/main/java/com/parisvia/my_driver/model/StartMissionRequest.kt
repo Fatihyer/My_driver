@@ -7,3 +7,8 @@ data class StartMissionRequest(
     @SerializedName("latitude") val latitude: Double,
     @SerializedName("longitude") val longitude: Double
 )
+
+data class FinishMissionRequest(
+    val finish_km: Int,
+    val cleaningStatus: String
+)
